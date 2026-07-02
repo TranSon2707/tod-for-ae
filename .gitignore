@@ -1,0 +1,3 @@
+# Ignore a specific folder and all its contents
+node_modules/
+bin/
