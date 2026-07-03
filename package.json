@@ -1,5 +1,6 @@
 {
   "name": "tod-for-ae",
+  "type": "module",
   "homepage": "https://TranSon2707.github.io/tod-for-ae",
   "version": "1.0.0",
   "private": true,
@@ -11,8 +12,8 @@
   },
   "dependencies": {
     "lucide-react": "^0.383.0",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",
