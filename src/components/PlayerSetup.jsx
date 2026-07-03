@@ -4,14 +4,6 @@ import { Badge } from './ui/index.jsx';
 import { Button } from './ui/index.jsx';
 import { Input } from './ui/index.jsx';
 
-/**
- * Lets users add, remove, and reorder players before the game starts.
- *
- * @param {{ id: string, name: string }[]} players
- * @param {(name: string) => void}         onAdd
- * @param {(id: string) => void}           onRemove
- * @param {(players: []) => void}          onReorder
- */
 export function PlayerSetup({ players, onAdd, onRemove, onReorder }) {
   const [inputValue, setInputValue] = useState('');
   const [dragFromIndex, setDragFromIndex] = useState(null);
@@ -44,8 +36,8 @@ export function PlayerSetup({ players, onAdd, onRemove, onReorder }) {
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center gap-2 mb-1">
-        <Users size={18} className="text-amber-600" />
-        <span className="font-semibold text-sm uppercase tracking-wider text-stone-500">
+        <Users size={18} className="text-primary" />
+        <span className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">
           Players
         </span>
         {players.length > 0 && (
@@ -62,12 +54,12 @@ export function PlayerSetup({ players, onAdd, onRemove, onReorder }) {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
-          className="flex-1 border-stone-300 focus-visible:ring-amber-500"
+          className="flex-1 focus-visible:ring-primary"
         />
         <Button
           onClick={handleAdd}
           disabled={!inputValue.trim()}
-          className="bg-amber-500 hover:bg-amber-600 text-white shrink-0"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground shrink-0"
         >
           <UserPlus size={16} className="mr-1" /> Add
         </Button>
@@ -75,7 +67,7 @@ export function PlayerSetup({ players, onAdd, onRemove, onReorder }) {
 
       {/* Player list */}
       {players.length === 0 ? (
-        <p className="text-sm text-stone-400 italic text-center py-3 border border-dashed border-stone-200 rounded-lg">
+        <p className="text-sm text-muted-foreground italic text-center py-3 border border-dashed border-border rounded-lg">
           No players yet — add some above, or play without players.
         </p>
       ) : (
@@ -91,16 +83,16 @@ export function PlayerSetup({ players, onAdd, onRemove, onReorder }) {
               className={[
                 'flex items-center gap-2 px-3 py-2 rounded-lg border text-sm font-medium transition-all cursor-grab active:cursor-grabbing',
                 dragOverIndex === index
-                  ? 'border-amber-400 bg-amber-50 scale-[1.02]'
-                  : 'border-stone-200 bg-white hover:border-stone-300',
+                  ? 'border-primary bg-primary/10 scale-[1.02]'
+                  : 'border-border bg-card hover:border-primary/40',
                 dragFromIndex === index ? 'opacity-40' : 'opacity-100',
               ].join(' ')}
             >
-              <GripVertical size={14} className="text-stone-300 shrink-0" />
-              <span className="flex-1 truncate">{player.name}</span>
+              <GripVertical size={14} className="text-muted-foreground shrink-0" />
+              <span className="flex-1 truncate text-foreground">{player.name}</span>
               <button
                 onClick={() => onRemove(player.id)}
-                className="text-stone-300 hover:text-red-400 transition-colors ml-auto"
+                className="text-muted-foreground hover:text-destructive transition-colors ml-auto"
               >
                 <X size={14} />
               </button>

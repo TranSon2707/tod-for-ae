@@ -4,17 +4,10 @@ import { useGameState } from './hooks/useGameState.js';
 import { PlayerSetup } from './components/PlayerSetup.jsx';
 import { QuestionSetSelector } from './components/QuestionSetSelector.jsx';
 import { GameScreen } from './components/GameScreen.jsx';
+import { ThemeToggle } from './components/ThemeToggle.jsx';
 import { Button, Separator } from './components/ui/index.jsx';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Setup screen tab labels
-// ─────────────────────────────────────────────────────────────────────────────
-
 const TABS = ['players', 'questions'];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// App
-// ─────────────────────────────────────────────────────────────────────────────
 
 export default function App() {
   const {
@@ -31,47 +24,44 @@ export default function App() {
 
   const [activeTab, setActiveTab] = useState('players');
 
-  // ── Playing / finished ─────────────────────────────────────────────────────
-
   if (state.screen === 'playing' || state.screen === 'finished') {
     return (
-      <div className="min-h-screen bg-stone-50 flex items-start justify-center">
-        <div className="w-full max-w-lg bg-white min-h-screen shadow-sm">
+      <div className="min-h-screen bg-background flex items-start justify-center">
+        <div className="w-full max-w-lg bg-card min-h-screen shadow-sm">
           <GameScreen state={state} onNext={nextTurn} onReset={resetGame} />
         </div>
       </div>
     );
   }
 
-  // ── Setup screen ───────────────────────────────────────────────────────────
-
   const playerTabLabel = state.players.length > 0
     ? `Players (${state.players.length})`
     : 'Players';
 
   return (
-    <div className="min-h-screen bg-stone-50 flex items-start justify-center">
-      <div className="w-full max-w-lg bg-white min-h-screen shadow-sm flex flex-col">
+    <div className="min-h-screen bg-background flex items-start justify-center">
+      <div className="w-full max-w-lg bg-card min-h-screen shadow-sm flex flex-col">
 
         {/* Header */}
-        <div className="px-6 pt-8 pb-5 border-b border-stone-100">
+        <div className="px-6 pt-8 pb-5 border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center shadow-sm">
-              <Dices size={20} className="text-white" />
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-sm">
+              <Dices size={20} className="text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-stone-900 leading-none">
+              <h1 className="text-xl font-bold text-foreground leading-none">
                 Truth or Dare
               </h1>
-              <p className="text-stone-400 text-xs mt-0.5">
+              <p className="text-muted-foreground text-xs mt-0.5">
                 One screen, any number of players
               </p>
             </div>
           </div>
+          <ThemeToggle />
         </div>
 
         {/* Tab bar */}
-        <div className="flex border-b border-stone-100">
+        <div className="flex border-b border-border">
           {TABS.map((tab) => (
             <button
               key={tab}
@@ -79,8 +69,8 @@ export default function App() {
               className={[
                 'flex-1 py-3 text-sm font-medium capitalize transition-colors',
                 activeTab === tab
-                  ? 'text-amber-600 border-b-2 border-amber-500 -mb-px'
-                  : 'text-stone-400 hover:text-stone-600',
+                  ? 'text-primary border-b-2 border-primary -mb-px'
+                  : 'text-muted-foreground hover:text-foreground',
               ].join(' ')}
             >
               {tab === 'players' ? playerTabLabel : 'Questions'}
@@ -112,13 +102,13 @@ export default function App() {
         {/* Start-game footer */}
         <div className="px-6 py-5">
           {state.players.length === 0 && (
-            <p className="text-xs text-stone-400 text-center mb-3">
+            <p className="text-xs text-muted-foreground text-center mb-3">
               No players added — questions will cycle freely.
             </p>
           )}
           <Button
             onClick={startGame}
-            className="w-full bg-amber-500 hover:bg-amber-600 text-white h-12 text-base font-semibold rounded-xl shadow-sm"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 text-base font-semibold rounded-xl shadow-sm"
           >
             Start Game <ChevronRight size={18} className="ml-1" />
           </Button>

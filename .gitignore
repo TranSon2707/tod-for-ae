@@ -1,3 +1,4 @@
 # Ignore a specific folder and all its contents
 node_modules/
 bin/
+test_csv/
