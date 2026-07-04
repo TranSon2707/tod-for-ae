@@ -5,27 +5,23 @@ import { Button } from './ui/index.jsx';
 
 export function QuestionSetSelector({ questionSets, selectedId, onSelect, onUpload }) {
   const fileInputRef = useRef(null);
-
+  
+  // Parses raw CSV text into an array of question objects.
   function parseCSV(csvText) {
-    const lines = csvText.split(/\r?\n/).filter((l) => l.trim());
+    const rows = parseCSVRows(csvText);
     const questions = [];
-    const startRow = lines[0]?.toLowerCase().includes('question') ? 1 : 0;
 
-    for (let i = startRow; i < lines.length; i++) {
-      const parts = lines[i].split(',');
+    if (rows.length === 0) return questions;
+
+    // Skip header row if the first cell mentions "question"
+    const startRow = rows[0][0]?.toLowerCase().includes('question') ? 1 : 0;
+
+    for (let i = startRow; i < rows.length; i++) {
+      const parts = rows[i];
       if (parts.length < 2) continue;
 
-      const text = parts
-        .slice(0, parts.length - 1)
-        .join(',')
-        .trim()
-        .replace(/^"|"$/g, '');
-
-      const rawType = parts[parts.length - 1]
-        .trim()
-        .toLowerCase()
-        .replace(/^"|"$/g, '');
-
+      const text = parts.slice(0, parts.length - 1).join(',').trim();
+      const rawType = parts[parts.length - 1].trim().toLowerCase();
       const type = rawType === 'd' || rawType === 'dare' ? 'dare' : 'truth';
 
       if (text) {
@@ -36,6 +32,54 @@ export function QuestionSetSelector({ questionSets, selectedId, onSelect, onUplo
     return questions;
   }
 
+  // Character-by-character CSV parser that correctly handles quoted fields,
+  // embedded commas, embedded newlines, and escaped quotes ("").
+  function parseCSVRows(csvText) {
+    const rows = [];
+    let row = [];
+    let field = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < csvText.length; i++) {
+      const char = csvText[i];
+      const next = csvText[i + 1];
+
+      if (inQuotes) {
+        if (char === '"' && next === '"') {
+          field += '"';
+          i++; // skip the escaped quote
+        } else if (char === '"') {
+          inQuotes = false;
+        } else {
+          field += char; // includes real newlines inside quotes
+        }
+      } else if (char === '"') {
+        inQuotes = true;
+      } else if (char === ',') {
+        row.push(field);
+        field = '';
+      } else if (char === '\r') {
+        // skip, \n handles the row break
+      } else if (char === '\n') {
+        row.push(field);
+        rows.push(row);
+        row = [];
+        field = '';
+      } else {
+        field += char;
+      }
+    }
+
+    // flush the last field/row (files often don't end with a trailing newline)
+    if (field.length > 0 || row.length > 0) {
+      row.push(field);
+      rows.push(row);
+    }
+
+    // drop fully blank rows
+    return rows.filter((r) => r.some((f) => f.trim() !== ''));
+  }
+  
   function handleFileChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;

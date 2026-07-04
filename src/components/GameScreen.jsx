@@ -121,8 +121,8 @@ export function GameScreen({ state, onNext, onReset }) {
               </div>
 
               {/* Question text */}
-              <div className="px-5 pb-6 min-h-[120px] flex items-center">
-                <p className="text-foreground text-lg font-medium leading-snug">
+              <div className="px-5 pb-6 min-h-[120px] flex items-center">                
+                <p className="text-foreground text-lg font-medium leading-snug whitespace-pre-line">
                   {currentQuestion?.text}
                 </p>
               </div>
