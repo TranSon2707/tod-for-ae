@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { ArrowRight, Flame, CircleHelp, RotateCcw, Users } from 'lucide-react';
+import { ArrowRight, Flame, CircleHelp, RotateCcw, Users, Beer } from 'lucide-react';
 import { Badge } from './ui/index.jsx';
 import { Button } from './ui/index.jsx';
 
 export function GameScreen({ state, onNext, onReset }) {
-  const { currentQuestion, currentPlayerIndex, players, screen } = state;
+  const { currentQuestion, currentPlayerIndex, players, screen, gameMode } = state;
+  const isDrinking = gameMode === 'drinking';
 
   const [cardKey, setCardKey]                   = useState(0);
   const [currentPlayerName, setCurrentPlayerName] = useState(null);
@@ -22,6 +23,7 @@ export function GameScreen({ state, onNext, onReset }) {
 
   const isFirstCard = !currentQuestion;
   const isTruth     = currentQuestion?.type === 'truth';
+  const drinkCount  = currentQuestion?.difficulty ?? 1;
 
   // ── Finished screen ────────────────────────────────────────────────────────
 
@@ -60,6 +62,11 @@ export function GameScreen({ state, onNext, onReset }) {
               ? `${players.length} player${players.length !== 1 ? 's' : ''}`
               : 'No players'}
           </span>
+          {isDrinking && (
+            <Badge className="bg-amber-500/15 text-amber-600 dark:text-amber-400 border-0 text-xs ml-1 flex items-center gap-1">
+              <Beer size={10} /> Drinking Game
+            </Badge>
+          )}
         </div>
         <button
           onClick={onReset}
@@ -81,6 +88,11 @@ export function GameScreen({ state, onNext, onReset }) {
                 ? `Starting with ${players[0].name}. Press Next to draw the first question.`
                 : 'Press Next to draw the first question.'}
             </p>
+            {isDrinking && (
+              <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                🍺 Fail a card, drink up — check the card for how many.
+              </p>
+            )}
           </div>
         ) : (
           /* Question card */
@@ -103,7 +115,7 @@ export function GameScreen({ state, onNext, onReset }) {
               ].join(' ')}
             >
               {/* Card type label */}
-              <div className="flex items-center gap-2 px-5 pt-5 pb-3">
+              <div className="flex items-center gap-2 px-5 pt-5 pb-3 flex-wrap">
                 {isTruth
                   ? <CircleHelp size={18} className="text-truth" />
                   : <Flame      size={18} className="text-dare" />
@@ -118,6 +130,13 @@ export function GameScreen({ state, onNext, onReset }) {
                 >
                   {currentQuestion?.type}
                 </Badge>
+
+                {isDrinking && (
+                  <Badge className="bg-amber-500/15 text-amber-600 dark:text-amber-400 border-0 text-xs font-bold flex items-center gap-1 ml-auto">
+                    <Beer size={12} />
+                    {drinkCount} {drinkCount === 1 ? 'drink' : 'drinks'} if failed
+                  </Badge>
+                )}
               </div>
 
               {/* Question text */}

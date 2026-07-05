@@ -26,6 +26,7 @@ function createInitialState() {
     allQuestions: [],                     // full question list for the active set
     selectedQuestionSetId: 'classic',
     questionSets: DEFAULT_QUESTION_SETS,
+    gameMode: 'classic',                  // 'classic' | 'drinking'
   };
 }
 
@@ -73,6 +74,10 @@ export function useGameState() {
       questionSets: [...prev.questionSets, questionSet],
       selectedQuestionSetId: questionSet.id,
     }));
+  }, []);
+
+  const setGameMode = useCallback((mode) => {
+    setState((prev) => ({ ...prev, gameMode: mode }));
   }, []);
 
   // ── Game lifecycle ─────────────────────────────────────────────────────────
@@ -193,6 +198,7 @@ export function useGameState() {
     reorderPlayers,
     selectQuestionSet,
     addCustomQuestionSet,
+    setGameMode,
     startGame,
     nextTurn,
     resetGame,

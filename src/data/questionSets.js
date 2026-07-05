@@ -1,10 +1,29 @@
 /**
- * Adds stable IDs to an array of questions.
- * @param {Array}  questions - Raw question objects (text + type).
+ * Normalizes a raw difficulty value (e.g. from CSV) to a positive integer.
+ * Used as the number of drinks to take in Drinking Game mode if a truth/dare
+ * isn't completed. Missing, non-numeric, or non-positive values fall back to 1.
+ * @param {*} value - Raw difficulty value.
+ */
+export function normalizeDifficulty(value) {
+  const n = Number(value);
+  if (value === '' || value === null || value === undefined || !Number.isFinite(n) || n <= 0) {
+    return 1;
+  }
+  return Math.round(n);
+}
+
+/**
+ * Adds stable IDs to an array of questions and normalizes each question's
+ * difficulty.
+ * @param {Array}  questions - Raw question objects (text + type [+ difficulty]).
  * @param {string} prefix    - Prefix used to namespace the IDs.
  */
 function withIds(questions, prefix) {
-  return questions.map((q, i) => ({ ...q, id: `${prefix}-${i}` }));
+  return questions.map((q, i) => ({
+    ...q, 
+    difficulty: normalizeDifficulty(q.difficulty),
+    id: `${prefix}-${i}`,
+  }));
 }
 
 // ---------------------------------------------------------------------------

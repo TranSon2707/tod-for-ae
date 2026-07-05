@@ -4,8 +4,10 @@
 
 /* ---------------------------------------------------------------------------
    Theme tokens — Light & Dark
-   HSL triplets (no hsl() wrapper) so Tailwind can add alpha via
+   Hue Saturation Light triplets (no hsl() wrapper) so Tailwind can add alpha via
    hsl(var(--token) / <alpha-value>)
+
+
 --------------------------------------------------------------------------- */
 :root {
   --background: 36 33% 97%;
@@ -90,6 +92,8 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+
+/* key frames */
 @keyframes slide-in-from-bottom-4 {
   0%   { opacity: 0; transform: translateY(1rem); }
   100% { opacity: 1; transform: translateY(0); }

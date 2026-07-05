@@ -2,11 +2,13 @@ import { useRef } from 'react';
 import { BookOpen, CircleCheck, Upload } from 'lucide-react';
 import { Badge } from './ui/index.jsx';
 import { Button } from './ui/index.jsx';
+import { normalizeDifficulty } from '../data/questionSets.js';
 
 export function QuestionSetSelector({ questionSets, selectedId, onSelect, onUpload }) {
   const fileInputRef = useRef(null);
-  
+
   // Parses raw CSV text into an array of question objects.
+  // Supports 2 columns (text, type) or 3 columns (text, type, difficulty).
   function parseCSV(csvText) {
     const rows = parseCSVRows(csvText);
     const questions = [];
@@ -20,12 +22,20 @@ export function QuestionSetSelector({ questionSets, selectedId, onSelect, onUplo
       const parts = rows[i];
       if (parts.length < 2) continue;
 
-      const text = parts.slice(0, parts.length - 1).join(',').trim();
-      const rawType = parts[parts.length - 1].trim().toLowerCase();
+      // 2 columns  -> text, type              (legacy format)
+      // 3+ columns -> text, type, difficulty  (last column is difficulty)
+      const hasDifficultyColumn = parts.length >= 3;
+      const typeIndex = hasDifficultyColumn ? parts.length - 2 : parts.length - 1;
+
+      const text = parts.slice(0, typeIndex).join(',').trim();
+      const rawType = parts[typeIndex]?.trim().toLowerCase();
       const type = rawType === 'd' || rawType === 'dare' ? 'dare' : 'truth';
+      const difficulty = normalizeDifficulty(
+        hasDifficultyColumn ? parts[parts.length - 1] : undefined,
+      );
 
       if (text) {
-        questions.push({ id: `custom-${i}`, text, type });
+        questions.push({ id: `custom-${i}`, text, type, difficulty });
       }
     }
 
@@ -79,7 +89,7 @@ export function QuestionSetSelector({ questionSets, selectedId, onSelect, onUplo
     // drop fully blank rows
     return rows.filter((r) => r.some((f) => f.trim() !== ''));
   }
-  
+
   function handleFileChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -173,9 +183,11 @@ export function QuestionSetSelector({ questionSets, selectedId, onSelect, onUplo
           <Upload size={14} className="mr-2" /> Upload CSV question set
         </Button>
         <p className="text-xs text-muted-foreground mt-1.5 text-center">
-          Two columns:{' '}
-          <code className="bg-muted px-1 rounded">question text</code> and{' '}
-          <code className="bg-muted px-1 rounded">truth/dare</code>
+          Columns:{' '}
+          <code className="bg-muted px-1 rounded">question text</code>,{' '}
+          <code className="bg-muted px-1 rounded">truth/dare</code>, optionally{' '}
+          <code className="bg-muted px-1 rounded">difficulty</code>{' '}
+          (drinks in Drinking Game mode — defaults to 1)
         </p>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dices, ChevronRight } from 'lucide-react';
+import { Dices, ChevronRight, Beer } from 'lucide-react';
 import { useGameState } from './hooks/useGameState.js';
 import { PlayerSetup } from './components/PlayerSetup.jsx';
 import { QuestionSetSelector } from './components/QuestionSetSelector.jsx';
@@ -17,6 +17,7 @@ export default function App() {
     reorderPlayers,
     selectQuestionSet,
     addCustomQuestionSet,
+    setGameMode,
     startGame,
     nextTurn,
     resetGame,
@@ -101,6 +102,32 @@ export default function App() {
 
         {/* Start-game footer */}
         <div className="px-6 py-5">
+          {/* Game mode toggle */}
+          <div className="grid grid-cols-2 gap-1 p-1 mb-4 bg-muted rounded-xl">
+            <button
+              onClick={() => setGameMode('classic')}
+              className={[
+                'flex items-center justify-center gap-1.5 py-2 rounded-lg text-sm font-medium transition-colors',
+                state.gameMode === 'classic'
+                  ? 'bg-card text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground',
+              ].join(' ')}
+            >
+              <Dices size={14} /> Classic
+            </button>
+            <button
+              onClick={() => setGameMode('drinking')}
+              className={[
+                'flex items-center justify-center gap-1.5 py-2 rounded-lg text-sm font-medium transition-colors',
+                state.gameMode === 'drinking'
+                  ? 'bg-card text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground',
+              ].join(' ')}
+            >
+              <Beer size={14} /> Drinking Game
+            </button>
+          </div>
+
           {state.players.length === 0 && (
             <p className="text-xs text-muted-foreground text-center mb-3">
               No players added — questions will cycle freely.
