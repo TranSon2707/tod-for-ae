@@ -107,3 +107,39 @@ body {
   0%   { opacity: 0; }
   100% { opacity: 1; }
 }
+
+@keyframes card-flip {
+  0% {
+    transform: translateY(0) scale(1) rotateY(0deg);
+  }
+  35% {
+    transform: translateY(-18px) scale(1.03) rotateY(0deg);
+    box-shadow: 0 30px 45px -12px hsl(var(--foreground) / 0.4);
+  }
+  50% {
+    transform: translateY(-18px) scale(1.03) rotateY(90deg);
+    box-shadow: 0 30px 45px -12px hsl(var(--foreground) / 0.4);
+  }
+  65% {
+    transform: translateY(-18px) scale(1.03) rotateY(0deg);
+    box-shadow: 0 30px 45px -12px hsl(var(--foreground) / 0.4);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotateY(0deg);
+  }
+}
+
+.card-flip-stage {
+  perspective: 1200px;
+}
+
+.animate-card-flip {
+  animation: card-flip 700ms cubic-bezier(0.45, 0, 0.2, 1);
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-card-flip {
+    animation: none;
+  }
+}
