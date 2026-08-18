@@ -61,8 +61,8 @@ export function GameScreen({ state, onNext, onReset }) {
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6 space-y-6">
         <div className="text-6xl">🎉</div>
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Game Finished!</h2>
-          <p className="text-muted-foreground mt-2">
+          <h2 className="text-fluid-2xl font-bold text-foreground">Game Finished!</h2>
+          <p className="text-muted-foreground mt-2 text-fluid-base">
             Every player has answered every question. You've been playing for way too long!
           </p>
         </div>
@@ -103,17 +103,17 @@ export function GameScreen({ state, onNext, onReset }) {
         {isFirstCard ? (
           <div className="text-center space-y-4 max-w-sm">
             <div className="text-5xl mb-2">🃏</div>
-            <h2 className="text-xl font-bold text-foreground">Ready to play!</h2>
-            <p className="text-muted-foreground text-sm">
+            <h2 className="text-fluid-xl font-bold text-foreground">Ready to play!</h2>
+            <p className="text-muted-foreground text-fluid-sm">
               {players.length > 0
                 ? `Starting with ${players[0].name}. Press Next to draw the first question.`
                 : 'Press Next to draw the first question.'}
             </p>
           </div>
         ) : (
-          <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className="card-fluid animate-in fade-in slide-in-from-bottom-4 duration-300">
             {displayedPlayerName && (
-              <p className="text-center text-muted-foreground text-sm font-medium mb-3 uppercase tracking-wider">
+              <p className="text-center text-muted-foreground text-fluid-sm font-medium mb-3 uppercase tracking-wider">
                 {displayedPlayerName}'s turn
               </p>
             )}
@@ -144,7 +144,7 @@ export function GameScreen({ state, onNext, onReset }) {
                 </div>
 
                 <div className="px-5 pb-6 min-h-[120px] flex items-center">
-                  <p className="text-foreground text-lg font-medium leading-snug whitespace-pre-line">
+                  <p className="text-foreground text-fluid-lg font-medium leading-snug whitespace-pre-line">
                     {displayedQuestion?.text}
                   </p>
                 </div>

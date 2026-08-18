@@ -28,7 +28,7 @@ export default function App() {
   if (state.screen === 'playing' || state.screen === 'finished') {
     return (
       <div className="min-h-screen bg-background flex items-start justify-center">
-        <div className="w-full max-w-lg bg-card min-h-screen shadow-sm">
+        <div className="shell-fluid bg-card min-h-screen shadow-sm">
           <GameScreen state={state} onNext={nextTurn} onReset={resetGame} />
         </div>
       </div>
@@ -41,7 +41,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-background flex items-start justify-center">
-      <div className="w-full max-w-lg bg-card min-h-screen shadow-sm flex flex-col">
+      <div className="shell-fluid bg-card min-h-screen shadow-sm flex flex-col">
 
         {/* Header */}
         <div className="px-6 pt-8 pb-5 border-b border-border flex items-center justify-between">
@@ -50,10 +50,10 @@ export default function App() {
               <Dices size={20} className="text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground leading-none">
+              <h1 className="text-fluid-xl font-bold text-foreground leading-none">
                 Truth or Dare
               </h1>
-              <p className="text-muted-foreground text-xs mt-0.5">
+              <p className="text-muted-foreground text-fluid-xs mt-0.5">
                 One screen, any number of players
               </p>
             </div>

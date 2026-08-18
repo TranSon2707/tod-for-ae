@@ -143,3 +143,29 @@ body {
     animation: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Fluid scale
+   Widths and type sizes that scale continuously with viewport width instead
+   of jumping between fixed Tailwind breakpoints. clamp(min, preferred, max):
+   the middle value drives growth between the floor and ceiling.
+--------------------------------------------------------------------------- */
+
+/* App shell: grows with the viewport from phone width up to a comfortable
+   reading-width cap on large screens. */
+.shell-fluid {
+  width: clamp(20rem, 94vw, 48rem);
+}
+
+/* Truth/dare card: tracks the (now-fluid) shell's available width, with its
+   own floor/ceiling so line length stays readable at either extreme. */
+.card-fluid {
+  width: clamp(18rem, 100%, 36rem);
+}
+
+.text-fluid-xs   { font-size: clamp(0.7rem,  0.66rem + 0.2vw, 0.8rem); }
+.text-fluid-sm   { font-size: clamp(0.8rem,  0.74rem + 0.3vw, 0.95rem); }
+.text-fluid-base { font-size: clamp(0.95rem, 0.87rem + 0.4vw, 1.125rem); }
+.text-fluid-lg   { font-size: clamp(1.05rem, 0.9rem + 0.7vw, 1.5rem); }
+.text-fluid-xl   { font-size: clamp(1.15rem, 0.95rem + 1vw, 1.75rem); }
+.text-fluid-2xl  { font-size: clamp(1.35rem, 1.05rem + 1.5vw, 2.25rem); }
